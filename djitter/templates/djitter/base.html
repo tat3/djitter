@@ -12,7 +12,7 @@
   <body style="padding-top: 80px;">
     <!-- Navbar -->
     <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
-         <a class="navbar-brand" href="/">Djitter</a>
+      <a class="navbar-brand" href="{% url "profile:frontpage" %}">Djitter</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -21,13 +21,13 @@
         <ul class="navbar-nav mr-auto">
           {% if request.user.is_authenticated %}
             <li class="nav-item">
-              <a class="nav-link" href="/">Home</a>
+              <a class="nav-link" href="{% url "profile:frontpage" %}">Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/feed">Feed</a>
+              <a class="nav-link" href="{% url "djeet:feed" %}">Feed</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="/signout">Sign out</a>
+              <a class="nav-link" href="{% url "profile:signout" %}">Sign out</a>
             </li>
           {% endif %}
         </ul>

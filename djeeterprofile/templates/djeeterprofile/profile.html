@@ -7,15 +7,15 @@
     <h3>@{{ user.username }}</h3>
     <hr>
 
-    <b><a href="/{{ user.username }}/follows/">Follows:</a></b> {{ user.djeeterprofile.follows.count }} -
-    <b><a href="/{{ user.username }}/following/">Followers:</a></b> {{ user.djeeterprofile.followed_by.count }}
+    <b><a href="{% url "profile:follows" user.username %}">Follows:</a></b> {{ user.djeeterprofile.follows.count }} -
+    <b><a href="{% url "profile:following" user.username %}">Followers:</a></b> {{ user.djeeterprofile.followed_by.count }}
     {% ifnotequal request.user user %}
       <hr>
 
       {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
-        <a href="/{{ user.username }}/stopfollow/" class="btn btn-danger">Stop follow</a>
+      <a href="{% url "profile:stopfollow" user.username %}" class="btn btn-danger">Stop follow</a>
       {% else %}
-        <a href="/{{ user.username }}/follow/" class="btn btn-success">Follow</a>
+      <a href="{% url "profile:follow" user.username %}" class="btn btn-success">Follow</a>
       {% endif %}
     {% endifnotequal %}
 
@@ -37,33 +37,33 @@
   <!-- Sidebar -->
   <div class="col-3">
     <h3>Add djeet</h3>
-{% if form.errors %}
-{% for field in form %}
-{% for error in form.errors %}
-<div class="alert alert-danger">
-<b>{{ error|escape }}</b>
-</div>
-{% endfor %}
-{% endfor %}
-{% for error in form.non_field_errors %}
-<div class="alert alert-danger">
-<b>{{ error|escape }}</b>
-</div>
-{% endfor %}
-{% endif %}
+    {% if form.errors %}
+      {% for field in form %}
+        {% for error in form.errors %}
+          <div class="alert alert-danger">
+            <b>{{ error|escape }}</b>
+          </div>
+        {% endfor %}
+      {% endfor %}
+      {% for error in form.non_field_errors %}
+        <div class="alert alert-danger">
+          <b>{{ error|escape }}</b>
+        </div>
+      {% endfor %}
+    {% endif %}
 
-<form action="/{{ request.user.username }}/" method="post">
-{% csrf_token %}
+    <form action="{% url "profile:profile" request.user.username %}" method="post">
+    {% csrf_token %}
 
-{% for field in form %}
-<div class="form-group">
-{{ field }}
-</div>
-{% endfor %}
+      {% for field in form %}
+        <div class="form-group">
+          {{ field }}
+        </div>
+      {% endfor %}
 
-<input type="hidden" value="{{ request.path }}" name="redirect">
-<input type="submit" value="Post djeet" class="btn btn-primary">
-</form>
+      <input type="hidden" value="{{ request.path }}" name="redirect">
+      <input type="submit" value="Post djeet" class="btn btn-primary">
+    </form>
   </div>
 </div>
 {% endblock %}
