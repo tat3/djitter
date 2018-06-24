@@ -6,8 +6,8 @@ This is a Django tutorial from https://ahackersday.com/blog/djitter-how-to-build
 ## Usage
 
 ```bash
-git clone https:github.com/tat3/djitter.git 
-echo SECRET_KEY="anything"
+git clone https://github.com/tat3/djitter.git 
+echo SECRET_KEY="anything" > .env
 docker-compose build
 docker-compose run app ./manage.py migrate
 docker-compose up
