@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.views.generic.base import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from djeeterprofile.forms import SignupForm, SigninForm
 from djeet.forms import DjeetForm
@@ -15,24 +17,27 @@ def return_to_top():
     top_url = reverse("profile:frontpage")
     return redirect(top_url)
 
-@login_required
-def profile(request, username):
-    user = User.objects.get(username=username)
 
-    if request.method == 'POST':
+class ProfileView(LoginRequiredMixin, TemplateView):
+    template_name = "djeeterprofile/profile.html"
+
+    def get(self, request, username):
+        context = {
+            "user": request.user,
+            "form": DjeetForm()
+        }
+        return self.render_to_response(context)
+
+    def post(self, request, username):
+        user = User.objects.get(username=username)
         form = DjeetForm(data=request.POST)
 
         if form.is_valid():
             djeet = form.save(commit=False)
-            djeet.user = request.user
+            djeet.user = user
             djeet.save()
 
-        redirecturl = request.POST.get('redirect', reverse("profile:frontpage"))
-        return redirect(redirecturl)
-    else:
-        form = DjeetForm()
-
-    return render(request, 'djeeterprofile/profile.html', {'form': form, 'user': user})
+        return self.render_to_response({ "form": form, "user": user, })
 
 
 def frontpage(request):
