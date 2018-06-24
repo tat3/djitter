@@ -5,7 +5,21 @@
   <!-- Feed -->
   <div class="col-9">
     <h3>@{{ user.username }}</h3>
+    <hr>
 
+    <b><a href="/{{ user.username }}/follows/">Follows:</a></b> {{ user.djeeterprofile.follows.count }} -
+    <b><a href="/{{ user.username }}/following/">Followers:</a></b> {{ user.djeeterprofile.followed_by.count }}
+    {% ifnotequal request.user user %}
+      <hr>
+
+      {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
+        <a href="/{{ user.username }}/stopfollow/" class="btn btn-danger">Stop follow</a>
+      {% else %}
+        <a href="/{{ user.username }}/follow/" class="btn btn-success">Follow</a>
+      {% endif %}
+    {% endifnotequal %}
+
+    <hr>
     {% if user.djeets.all %}
       {% for djeet in user.djeets.all %}
         <div class="card" style="margin-bottom: 20px;">

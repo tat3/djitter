@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+
 from djeeterprofile.forms import SignupForm, SigninForm
 from djeet.forms import DjeetForm
 
@@ -56,10 +59,37 @@ def frontpage(request):
             signupform = SignupForm()
             signinform = SigninForm()
   
-            return render(request, 'djitter/frontpage.html', {'signupform': signupform, 'signinform': signinform})
+        return render(request, 'djitter/frontpage.html', {'signupform': signupform, 'signinform': signinform})
 
 
 def signout(request):
     logout(request)
     return redirect('/')
+
+
+def follows(request, username):
+    user = User.objects.get(username=username)
+    djeeterprofiles = user.djeeterprofile.follows
+
+    return render(request, 'djitter/users.html', {'title': 'Follows', 'djeeterprofiles': djeeterprofiles})
+
+def followers(request, username):
+    user = User.objects.get(username=username)
+    djeeterprofiles = user.djeeterprofile.followed_by
+
+    return render(request, 'djitter/users.html', {'title': 'Followers', 'djeeterprofiles': djeeterprofiles})
+
+@login_required
+def follow(request, username):
+    user = User.objects.get(username=username)
+    request.user.djeeterprofile.follows.add(user.djeeterprofile)
+
+    return HttpResponseRedirect("/" + user.username + "/")
+
+@login_required
+def stopfollow(request, username):
+    user = User.objects.get(username=username)
+    request.user.djeeterprofile.follows.remove(user.djeeterprofile)
+
+    return HttpResponseRedirect("/" + user.username + "/")
 
