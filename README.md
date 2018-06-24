@@ -10,7 +10,7 @@ git clone https:github.com/tat3/djitter.git
 echo SECRET_KEY="anything"
 docker-compose build
 docker-compose run app ./manage.py migrate
-docker-compoes up
+docker-compose up
 ```
 Then open http://localhost
 
