@@ -10,7 +10,7 @@ from djeet.forms import DjeetForm
 
 # Views
 
-def profile(request, username): # Replace the old profile view with this one
+def profile(request, username):
     if request.user.is_authenticated:
         user = User.objects.get(username=username)
 
@@ -27,14 +27,14 @@ def profile(request, username): # Replace the old profile view with this one
         else:
             form = DjeetForm()
 
-        return render(request, 'djitter/profile.html', {'form': form, 'user': user})
+        return render(request, 'djeeterprofile/profile.html', {'form': form, 'user': user})
     else:
         return redirect('/')
 
 
 def frontpage(request):
     if request.user.is_authenticated:
-        return render(request, 'djitter/profile.html')
+        return redirect('/' + request.user.username + '/')
     else:
         if request.method == 'POST':
             if 'signupform' in request.POST:
@@ -69,15 +69,15 @@ def signout(request):
 
 def follows(request, username):
     user = User.objects.get(username=username)
-    djeeterprofiles = user.djeeterprofile.follows
+    djeeterprofiles = user.djeeterprofile.follows.select_related("user").all()
 
-    return render(request, 'djitter/users.html', {'title': 'Follows', 'djeeterprofiles': djeeterprofiles})
+    return render(request, 'djeeterprofile/users.html', {'title': 'Follows', 'djeeterprofiles': djeeterprofiles})
 
 def followers(request, username):
     user = User.objects.get(username=username)
-    djeeterprofiles = user.djeeterprofile.followed_by
+    djeeterprofiles = user.djeeterprofile.followed_by.select_related("user").all()
 
-    return render(request, 'djitter/users.html', {'title': 'Followers', 'djeeterprofiles': djeeterprofiles})
+    return render(request, 'djeeterprofile/users.html', {'title': 'Followers', 'djeeterprofiles': djeeterprofiles})
 
 @login_required
 def follow(request, username):
