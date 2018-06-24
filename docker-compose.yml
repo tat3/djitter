@@ -1,0 +1,17 @@
+version: '3'
+services:
+  db:
+    image: postgres
+  app:
+    build: .
+    volumes:
+      - .:/code
+    env_file: .env
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    links:
+      - app

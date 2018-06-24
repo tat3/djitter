@@ -1,0 +1,19 @@
+{% extends 'djitter/base.html' %}
+
+{% block main %}
+<div class="row">
+  <div class="col-12">
+    <h3>Feed</h3>
+
+    {% for djeet in djeets %}
+      <div class="card" style="margin-bottom: 20px;">
+        <div class="card-body">
+          <h5 class="card-title"><a href="/{{ djeet.user.username }}/">@{{ djeet.user.username }}</a></h5>
+          <p class="card-text"><b>{{ djeet.created_at }}</b> - {{ djeet.body }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+
