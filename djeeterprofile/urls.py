@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from .views import (
-    frontpage, signout, follows, followers, follow, stopfollow, profile,
+    frontpage, signout, follows, followers, follow, stopfollow, 
     ProfileView
 )
 
