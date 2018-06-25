@@ -6,6 +6,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.views.generic.base import TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LogoutView
 
 from djeeterprofile.forms import SignupForm, SigninForm
 from djeet.forms import DjeetForm
@@ -13,9 +14,12 @@ from djeet.forms import DjeetForm
 
 # Views
 
+def top_url():
+    return reverse("profile:frontpage")
+
 def return_to_top():
-    top_url = reverse("profile:frontpage")
-    return redirect(top_url)
+    topurl = top_url()
+    return redirect(topurl)
 
 
 class ProfileView(LoginRequiredMixin, TemplateView):
@@ -23,7 +27,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, username):
         context = {
-            "user": request.user,
+            "user": User.objects.get(username=username),
             "form": DjeetForm()
         }
         return self.render_to_response(context)
@@ -40,11 +44,23 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         return self.render_to_response({ "form": form, "user": user, })
 
 
-def frontpage(request):
-    if request.user.is_authenticated:
-        return redirect(reverse("profile:profile", args=[request.user.username]))
+class FrontPageView(TemplateView):
+    template_name = "djitter/frontpage.html"
 
-    if request.method == 'POST':
+    def get(self, request):
+        if request.user.is_authenticated:
+            return redirect(reverse("profile:profile", args=[request.user.username]))
+        
+        signupform = SignupForm()
+        signinform = SigninForm()
+
+        context = {
+            "signupform": signupform,
+            "signinform": signinform
+        }
+        return self.render_to_response(context)
+
+    def post(self, request):
         if 'signupform' in request.POST:
             signupform = SignupForm(data=request.POST)
             signinform = SigninForm()
@@ -56,6 +72,7 @@ def frontpage(request):
                 user = authenticate(username=username, password=password)
                 login(request, user)
                 return return_to_top()
+   
         else:
             signinform = SigninForm(data=request.POST)
             signupform = SignupForm()
@@ -63,40 +80,54 @@ def frontpage(request):
             if signinform.is_valid():
                 login(request, signinform.get_user())
                 return return_to_top()
-    else:
-        signupform = SignupForm()
-        signinform = SigninForm()
-  
-    return render(request, 'djitter/frontpage.html', {'signupform': signupform, 'signinform': signinform})
+
+        context = {
+            "signupform": signupform,
+            "signinform": signinform
+        }
+        return self.render_to_response(context)
 
 
-def signout(request):
-    logout(request)
-    return return_to_top()
+class SignoutView(LogoutView):
+    next_page = "/"
 
 
-def follows(request, username):
-    user = User.objects.get(username=username)
-    djeeterprofiles = user.djeeterprofile.follows.select_related("user").all()
-    return render(request, 'djeeterprofile/users.html', {'title': 'Follows', 'djeeterprofiles': djeeterprofiles})
+class FollowsView(TemplateView):
+    template_name = "djeeterprofile/users.html"
+
+    def get(self, request, username):
+        user = User.objects.get(username=username)
+        djeeterprofiles = user.djeeterprofile.follows.select_related("user").all()
+        return self.render_to_response({
+            "title": "Follows",
+            "djeeterprofiles": djeeterprofiles,
+        })
 
 
-def followers(request, username):
-    user = User.objects.get(username=username)
-    djeeterprofiles = user.djeeterprofile.followed_by.select_related("user").all()
-    return render(request, 'djeeterprofile/users.html', {'title': 'Followers', 'djeeterprofiles': djeeterprofiles})
+class FollowersView(TemplateView):
+    template_name = "djeeterprofile/users.html"
+
+    def get(self, request, username):
+        user = User.objects.get(username=username)
+        djeeterprofiles = user.djeeterprofile.followed_by.select_related("user").all()
+        return self.render_to_response({
+            "title": "Followers",
+            "djeeterprofiles": djeeterprofiles,
+        })
+
+    
+class FollowView(LoginRequiredMixin, TemplateView):
+    
+    def get(self, request, username):
+        user = User.objects.get(username=username)
+        request.user.djeeterprofile.follows.add(user.djeeterprofile)
+        return HttpResponseRedirect(reverse("profile:profile", kwargs={"username": username}))
 
 
-@login_required
-def follow(request, username):
-    user = User.objects.get(username=username)
-    request.user.djeeterprofile.follows.add(user.djeeterprofile)
-    return HttpResponseRedirect("/" + user.username + "/")
-
-
-@login_required
-def stopfollow(request, username):
-    user = User.objects.get(username=username)
-    request.user.djeeterprofile.follows.remove(user.djeeterprofile)
-    return HttpResponseRedirect("/" + user.username + "/")
+class StopFollowView(LoginRequiredMixin, TemplateView):
+    
+    def get(self, request, username):
+        user = User.objects.get(username=username)
+        request.user.djeeterprofile.follows.remove(user.djeeterprofile)
+        return HttpResponseRedirect(reverse("profile:profile", kwargs={"username": username}))
 

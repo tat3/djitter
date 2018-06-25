@@ -1,19 +1,19 @@
 from django.urls import path, include
 
 from .views import (
-    frontpage, signout, follows, followers, follow, stopfollow, 
-    ProfileView
+    ProfileView, FrontPageView, SignoutView, FollowsView, FollowersView,
+    FollowView, StopFollowView,
 )
 
 
 app_name = "djeeterprofile"
 
 urlpatterns = [
-    path("", frontpage, name="frontpage"),
-    path("signout/", signout, name="signout"),
-    path("<str:username>/follows/", follows, name="follows"),
-    path("<str:username>/following/", followers, name="following"),
-    path("<str:username>/follow/", follow, name="follow"),
-    path("<str:username>/stopfollow/", stopfollow, name="stopfollow"),
+    path("", FrontPageView.as_view(), name="frontpage"),
+    path("signout/", SignoutView.as_view(), name="signout"),
+    path("<str:username>/follows/", FollowsView.as_view(), name="follows"),
+    path("<str:username>/following/", FollowersView.as_view(), name="following"),
+    path("<str:username>/follow/", FollowView.as_view(), name="follow"),
+    path("<str:username>/stopfollow/", StopFollowView.as_view(), name="stopfollow"),
     path("<str:username>/", ProfileView.as_view(), name="profile"),
 ]
