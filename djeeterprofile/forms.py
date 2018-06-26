@@ -11,16 +11,6 @@ class SignupForm(UserCreationForm):
         widget=forms.widgets.TextInput(attrs={
             'placeholder': 'Email',
             'class': 'form-control'}))
-    first_name = forms.CharField(
-        required=True,
-        widget=forms.widgets.TextInput(attrs={
-            'placeholder': 'First Name',
-            'class': 'form-control'}))
-    last_name = forms.CharField(
-        required=True,
-        widget=forms.widgets.TextInput(attrs={
-            'placeholder': 'Last Name',
-            'class': 'form-control'}))
     username = forms.CharField(
         widget=forms.widgets.TextInput(attrs={
             'placeholder': 'Username',
@@ -35,8 +25,8 @@ class SignupForm(UserCreationForm):
             'class': 'form-control'}))
 
     class Meta:
-        fields = ['email', 'username', 'first_name',
-                  'last_name', 'password1', 'password2']
+        fields = ['email', 'username',
+                  'password1', 'password2']
         model = User
 
 
