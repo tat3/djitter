@@ -9,3 +9,4 @@ __pycache__
 !.gitkeep
 memo.md
 db.sqlite3
+initial_data.yaml
