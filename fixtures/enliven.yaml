@@ -1,0 +1,30 @@
+- model: auth.user
+  pk: 3
+  fields:
+    username: user03
+- model: auth.user
+  pk: 4
+  fields:
+    username: user04
+- model: auth.user
+  pk: 5
+  fields:
+    username: user05
+
+- model: djeeterprofile.djeeterprofile
+  pk: 3
+  fields:
+    user: 3
+    follows: [4, 5]
+- model: djeeterprofile.djeeterprofile
+  pk: 4
+  fields:
+    user: 4
+- model: djeeterprofile.djeeterprofile
+  pk: 5
+  fields:
+    user: 5
+
+- model: djeet.djeet
+  pk: 3
+  fields: {user: 3, body: "Djeet03", created_at: "2018-06-26 00:00:0.000000+00"}
