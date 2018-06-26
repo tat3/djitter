@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -27,7 +27,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, username):
         context = {
-            "user": User.objects.get(username=username),
+            "user": get_object_or_404(User, username=username),
             "form": DjeetForm()
         }
         return self.render_to_response(context)
@@ -130,4 +130,7 @@ class StopFollowView(LoginRequiredMixin, TemplateView):
         user = User.objects.get(username=username)
         request.user.djeeterprofile.follows.remove(user.djeeterprofile)
         return HttpResponseRedirect(reverse("profile:profile", kwargs={"username": username}))
+
+def page_not_found(request, template_name="404.html"):
+    return render(request, template_name, {})
 

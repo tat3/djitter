@@ -1,4 +1,6 @@
 from django.urls import path, include
+from django.conf.urls import handler404
+
 
 from .views import (
     ProfileView, FrontPageView, SignoutView, FollowsView, FollowersView,
@@ -17,3 +19,6 @@ urlpatterns = [
     path("<str:username>/stopfollow/", StopFollowView.as_view(), name="stopfollow"),
     path("<str:username>/", ProfileView.as_view(), name="profile"),
 ]
+
+handler404 = 'djeeterprofile.views.page_not_found'
+
