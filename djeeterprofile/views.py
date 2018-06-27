@@ -33,7 +33,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         return self.render_to_response(context)
 
     def post(self, request, username):
-        user = User.objects.get(username=username)
+        user = get_object_or_404(User, username=username)
         form = DjeetForm(data=request.POST)
 
         if form.is_valid():

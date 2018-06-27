@@ -1,9 +1,14 @@
 {% extends 'djitter/base.html' %}
+{% load static %}
 
 {% block main %}
 <div class="row">
   <!-- Feed -->
   <div class="col-9">
+    <figure>
+      <img src="{% static "djeeterprofile/img/icon.png" %}">
+    </figure>
+
     <h3>@{{ user.username }}</h3>
     <hr>
 
