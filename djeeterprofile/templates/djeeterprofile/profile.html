@@ -2,46 +2,52 @@
 {% load static %}
 
 {% block main %}
-<div class="row">
-  <!-- Feed -->
-  <div class="col-9">
-    <figure>
-      <img src="{% static "djeeterprofile/img/icon.png" %}">
-    </figure>
-
-    <h3>@{{ user.username }}</h3>
-    <hr>
-
-    <b><a href="{% url "profile:follows" user.username %}">Follows:</a></b> {{ user.djeeterprofile.follows.count }} -
-    <b><a href="{% url "profile:following" user.username %}">Followers:</a></b> {{ user.djeeterprofile.followed_by.count }}
-    {% ifnotequal request.user user %}
-      <hr>
-
-      {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
-      <a href="{% url "profile:stopfollow" user.username %}" class="btn btn-danger">Stop follow</a>
-      {% else %}
-      <a href="{% url "profile:follow" user.username %}" class="btn btn-success">Follow</a>
-      {% endif %}
-    {% endifnotequal %}
-
-    <hr>
-    {% if user.djeets.all %}
-      {% for djeet in user.djeets.all %}
-        <div class="card" style="margin-bottom: 20px;">
-          <div class="card-body">
-            <h5 class="card-title">@{{ djeet.user.username }}</h5>
-            <p class="card-text"><b>{{ djeet.created_at }}</b> - {{ djeet.body }}</p>
-          </div>  
-        </div>
-      {% endfor %}
-    {% else %}
-      <p>No djeets yet!</p>
-    {% endif %}
-  </div>
-
+<div class="main">
   <!-- Sidebar -->
-  <div class="col-3">
-    <h3>Add djeet</h3>
+  <div class="profile">
+    <div class="card profile__inner" style="">
+      <figure class="profile__icon">
+        <img class="card-img-top profile__img" src="{% static "djeeterprofile/img/icon.png" %}">
+      </figure>
+      <div class="card-body">
+        <div class="profile__user">
+          <div class="profile__user-name">
+            <h5 class="card-title">{{ user.username }}</h3>
+            <p class="card-subtitle">@{{ user.username }}</h3>
+          </div>
+          <div class="profile__follow">
+          {% ifnotequal request.user user %}
+            {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
+            <a href="{% url "profile:stopfollow" user.username %}" class="btn btn-danger">Stop follow</a>
+            {% else %}
+            <a href="{% url "profile:follow" user.username %}" class="btn btn-success">Follow</a>
+            {% endif %}
+          {% endifnotequal %}
+          </div>
+        </div>
+
+        <hr>
+        <ul class="profile__links">
+          <li class="profile__link">
+            <a class="profile__link-inner">
+              <p class="profile__link-title">Djeets</p>
+              <p class="profile__link-number">{{ user.djeets.all.count }}</p> 
+            </a>
+          </li>
+          <li class="profile__link">
+            <a class="profile__link-inner" href="{% url "profile:follows" user.username %}">
+              <p class="profile__link-title">Follows</p>
+              <p class="profile__link-number">{{ user.djeeterprofile.follows.count }}</p> 
+            </a>
+          </li>
+          <li class="profile__link">
+            <a class="profile__link-inner" href="{% url "profile:follows" user.username %}">
+              <p class="profile__link-title">Followers</p>
+              <p class="profile__link-number">{{ user.djeeterprofile.followed_by.count }}</p> 
+            </a>
+          </li>
+        </ul>
+        <hr>
     {% if form.errors %}
       {% for field in form %}
         {% for error in form.errors %}
@@ -56,7 +62,7 @@
         </div>
       {% endfor %}
     {% endif %}
-
+      </div>
     <form action="{% url "profile:profile" request.user.username %}" method="post">
     {% csrf_token %}
 
@@ -69,6 +75,27 @@
       <input type="hidden" value="{{ request.path }}" name="redirect">
       <input type="submit" value="Post djeet" class="btn btn-primary">
     </form>
+ 
+    </div>
+
+ </div>
+
+  <!-- Feed -->
+  <div class="timeline">
+
+    {% if user.djeets.all %}
+      {% for djeet in user.djeets.all %}
+        <div class="card" style="margin-bottom: 20px;">
+          <div class="card-body">
+            <h5 class="card-title">@{{ djeet.user.username }}</h5>
+            <p class="card-text"><b>{{ djeet.created_at }}</b> - {{ djeet.body }}</p>
+          </div>  
+        </div>
+      {% endfor %}
+    {% else %}
+      <p>No djeets yet!</p>
+    {% endif %}
   </div>
+
 </div>
 {% endblock %}
