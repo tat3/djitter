@@ -8,7 +8,7 @@ class FixtureGenerator:
     
     def g_user_object(self, n):
         item = {
-            "model": "auth.user",
+            "model": "users.user",
             "pk": n,
             "fields": {
                 "username": "user{0:03d}".format(n),
