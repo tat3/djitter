@@ -18,7 +18,7 @@
           <div class="profile__follow">
           {% ifnotequal request.user user %}
             {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
-            <a href="{% url "profile:stopfollow" user.username %}" class="btn btn-danger">Stop follow</a>
+            <a href="{% url "profile:stopfollow" user.username %}" class="btn btn-danger">Unfollow</a>
             {% else %}
             <a href="{% url "profile:follow" user.username %}" class="btn btn-success">Follow</a>
             {% endif %}

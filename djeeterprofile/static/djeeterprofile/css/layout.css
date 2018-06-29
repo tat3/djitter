@@ -3,6 +3,7 @@
 
 .profile {
   width: 350px;
+  max-width: 250px;
   margin: 0 20px; }
   .profile hr {
     margin: 0; }
