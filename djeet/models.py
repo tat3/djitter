@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from users.models import User
 
 class Djeet(models.Model):
   user = models.ForeignKey(User, related_name='djeets', on_delete=models.DO_NOTHING)

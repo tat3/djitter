@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'djitter',
     'djeeterprofile',
     'djeet',
+    'users',
 ]
 
 MIDDLEWARE = [
@@ -132,4 +133,6 @@ MIDDLEWARE += (
     'whitenoise.middleware.WhiteNoiseMiddleware',
 )
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+AUTH_USER_MODEL = "users.User"
 

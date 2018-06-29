@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
@@ -10,7 +9,7 @@ from django.contrib.auth.views import LogoutView
 
 from djeeterprofile.forms import SignupForm, SigninForm
 from djeet.forms import DjeetForm
-
+from users.models import User
 
 # Views
 
