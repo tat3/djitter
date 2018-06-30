@@ -29,6 +29,9 @@
               <a class="nav-link" href="{% url "djeet:feed" %}">Feed</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="{% url "profile:likes" username=request.user.username %}">Likes</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{% url "profile:signout" %}">Sign out</a>
             </li>
           {% endif %}

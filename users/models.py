@@ -18,4 +18,5 @@ class User(AbstractUser):
         error_messages={
             'unique': _("A user with that username already exists."),
         })
+    profile = models.CharField(max_length=140, default="")
 
