@@ -1,7 +1,8 @@
 # Djitter
 
 Twitter clone using Django
-This is a Django tutorial from https://ahackersday.com/blog/djitter-how-to-build-a-twitter-clone-using-django-2-0/
+
+This code is based on a Django tutorial (https://ahackersday.com/blog/djitter-how-to-build-a-twitter-clone-using-django-2-0/).
 
 ## Usage
 
@@ -11,6 +12,7 @@ echo SECRET_KEY="anything" > .env
 docker-compose build
 docker-compose run app ./manage.py migrate
 docker-compose up
+docker exec -it djitter_app_1 ./manage.py migrate
 ```
-Then open http://localhost
+Then open http://localhost.
 
