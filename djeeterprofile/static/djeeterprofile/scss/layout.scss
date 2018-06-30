@@ -1,5 +1,9 @@
 $main-blue: #1DA1F2;
 
+body {
+  background-color: #f5f5f5;
+}
+
 .main {
   display: flex;
 }
@@ -30,11 +34,14 @@ $main-blue: #1DA1F2;
   &__user {
     display: flex;
     align-items: center;
-    padding-bottom: 20px;
 
     &-name {
       padding-right: 30px;
     }
+  }
+  
+  &__follow {
+    padding: 10px 0;
   }
 
   &__inner {
@@ -89,3 +96,26 @@ $main-blue: #1DA1F2;
 .timeline {
   width: 600px;
 }
+
+.djeet {
+
+  &__user {
+    display: flex;
+    margin-bottom: 5px;
+    align-items: center;
+
+
+    &icon {
+      width: 40px;
+      height: auto;
+      margin: 0;
+      margin-right: 10px;
+    }
+  }
+
+  &__img {
+    width: 100%;
+  }
+}
+
+

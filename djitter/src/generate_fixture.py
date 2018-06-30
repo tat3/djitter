@@ -12,6 +12,7 @@ class FixtureGenerator:
             "pk": n,
             "fields": {
                 "username": "user{0:03d}".format(n),
+                "nickname": "name{0:03d}".format(n),
             },
         }
         return item

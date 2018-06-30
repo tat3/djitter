@@ -1,3 +1,6 @@
+body {
+  background-color: #f5f5f5; }
+
 .main {
   display: flex; }
 
@@ -18,10 +21,11 @@
     max-height: 100%; }
   .profile__user {
     display: flex;
-    align-items: center;
-    padding-bottom: 20px; }
+    align-items: center; }
     .profile__user-name {
       padding-right: 30px; }
+  .profile__follow {
+    padding: 10px 0; }
   .profile__links {
     display: flex;
     list-style-type: none;
@@ -52,5 +56,17 @@
 
 .timeline {
   width: 600px; }
+
+.djeet__user {
+  display: flex;
+  margin-bottom: 5px;
+  align-items: center; }
+  .djeet__usericon {
+    width: 40px;
+    height: auto;
+    margin: 0;
+    margin-right: 10px; }
+.djeet__img {
+  width: 100%; }
 
 /*# sourceMappingURL=layout.css.map */
