@@ -68,8 +68,13 @@ body {
     margin-right: 10px; }
 .djeet__img {
   width: 100%; }
+.djeet:hover {
+  background-color: #eeeeee; }
 
 .topbar {
   box-shadow: 0 2px 1px 0 rgba(0, 0, 0, 0.25); }
+
+.text-black {
+  color: #000000; }
 
 /*# sourceMappingURL=layout.css.map */

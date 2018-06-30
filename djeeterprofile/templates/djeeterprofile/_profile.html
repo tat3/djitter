@@ -1,0 +1,77 @@
+{% load static %}
+
+  <div class="profile">
+    <div class="card profile__inner" style="">
+      <figure class="profile__icon">
+        <img class="card-img-top profile__img" src="{% static "djeeterprofile/img/icon.png" %}">
+      </figure>
+      <div class="card-body">
+        <div class="profile__user">
+          <div class="profile__user-name">
+            <h5 class="card-title">{{ user.nickname }}</h3>
+            <p class="card-subtitle text-muted">@{{ user.username }}</h3>
+          </div>
+        </div>
+        <div class="profile__follow">
+          {% ifnotequal request.user user %}
+            {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
+              <a href="{% url "profile:stopfollow" user.username %}" class="btn btn-danger">Unfollow</a>
+            {% else %}
+              <a href="{% url "profile:follow" user.username %}" class="btn btn-success">Follow</a>
+            {% endif %}
+          {% endifnotequal %}
+        </div>
+
+        <hr>
+        <ul class="profile__links">
+          <li class="profile__link">
+            <a class="profile__link-inner">
+              <p class="profile__link-title">Djeets</p>
+              <p class="profile__link-number">{{ user.djeets.all.count }}</p> 
+            </a>
+          </li>
+          <li class="profile__link">
+            <a class="profile__link-inner" href="{% url "profile:follows" user.username %}">
+              <p class="profile__link-title">Follows</p>
+              <p class="profile__link-number">{{ user.djeeterprofile.follows.count }}</p> 
+            </a>
+          </li>
+          <li class="profile__link">
+            <a class="profile__link-inner" href="{% url "profile:follows" user.username %}">
+              <p class="profile__link-title">Followers</p>
+              <p class="profile__link-number">{{ user.djeeterprofile.followed_by.count }}</p> 
+            </a>
+          </li>
+        </ul>
+        <hr>
+        {% if form.errors %}
+          {% for field in form %}
+            {% for error in form.errors %}
+              <div class="alert alert-danger">
+                <b>{{ error|escape }}</b>
+              </div>
+            {% endfor %}
+          {% endfor %}
+          {% for error in form.non_field_errors %}
+             <div class="alert alert-danger">
+               <b>{{ error|escape }}</b>
+             </div>
+          {% endfor %}
+        {% endif %}
+        <form action="{% url "profile:profile" request.user.username %}" method="post">
+          {% csrf_token %}
+
+          {% for field in form %}
+            <div class="form-group">
+              {{ field }}
+            </div>
+          {% endfor %}
+
+          <input type="hidden" value="{{ request.path }}" name="redirect">
+          <input type="submit" value="Post djeet" class="btn btn-primary">
+        </form>
+ 
+      </div>
+    </div>
+  </div>
+

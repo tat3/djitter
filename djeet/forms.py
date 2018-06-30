@@ -9,7 +9,9 @@ class DjeetForm(forms.ModelForm):
         required=True,
         widget=forms.widgets.Textarea(attrs={
             "placeholder": "Djeet",
-            "class": "form-control"}))
+            "class": "form-control",
+            "rows": 5,
+            "style": "resize: none;"}))
 
     class Meta:
         model = Djeet

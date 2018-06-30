@@ -1,0 +1,18 @@
+{% load static %}
+
+<div class="card djeet" style="margin-bottom: 20px;">
+  <div class="card-body">
+    <div class="djeet__user">
+      <figure class="djeet__usericon">
+        <img class="djeet__img" src="{% static "djeeterprofile/img/icon.png" %}">
+      </figure>
+      <div class="djeet__username">
+        <a class="text-black" href="{% url "profile:profile" username=djeet.user.username %}"><p class="card-text mb-0"><b>{{ djeet.user.nickname }}</b></p></a>
+        <p class="card-text text-muted">@{{ djeet.user.username }}</p>
+      </div>
+    </div>
+    <p class="card-text">{{ djeet.body }}</p>
+    <p class="card-text"><small class="text-muted">{{ djeet.created_at }}</small></p>
+  </div>  
+</div>
+
