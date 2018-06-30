@@ -10,8 +10,8 @@ from django.contrib.auth.views import LogoutView
 from djeeterprofile.forms import SignupForm, SigninForm
 from djeet.forms import DjeetForm
 from users.models import User
+from djeet.models import Djeet
 
-# Views
 
 def top_url():
     return reverse("profile:frontpage")
@@ -118,7 +118,7 @@ class FollowersView(TemplateView):
 class FollowView(LoginRequiredMixin, TemplateView):
     
     def get(self, request, username):
-        user = User.objects.get(username=username)
+        user = get_object_or_404(User, username=username)
         request.user.djeeterprofile.follows.add(user.djeeterprofile)
         return HttpResponseRedirect(reverse("profile:profile", kwargs={"username": username}))
 
@@ -126,9 +126,38 @@ class FollowView(LoginRequiredMixin, TemplateView):
 class StopFollowView(LoginRequiredMixin, TemplateView):
     
     def get(self, request, username):
-        user = User.objects.get(username=username)
+        user = get_object_or_404(User, username=username)
         request.user.djeeterprofile.follows.remove(user.djeeterprofile)
         return HttpResponseRedirect(reverse("profile:profile", kwargs={"username": username}))
+
+
+class LikeView(LoginRequiredMixin, TemplateView):
+    
+    def get(self, request, djeet_id):
+        djeet = get_object_or_404(Djeet, id=djeet_id)
+        request.user.djeeterprofile.likes.add(djeet)
+        return redirect(request.META["HTTP_REFERER"])
+
+
+class StopLikeView(LoginRequiredMixin, TemplateView):
+    
+    def get(self, request, djeet_id):
+        djeet = get_object_or_404(Djeet, id=djeet_id)
+        request.user.djeeterprofile.likes.remove(djeet)
+        return redirect(request.META["HTTP_REFERER"])
+
+
+class LikesView(TemplateView):
+    template_name = "djeet/djeets.html"
+
+    def get(self, request, username):
+        user = get_object_or_404(User, username=username)
+        djeets = user.djeeterprofile.likes.select_related("user").all()
+        return self.render_to_response({
+            "title": "Likes",
+            "djeets": djeets,
+        })
+
 
 def page_not_found(request, template_name="404.html"):
     return render(request, template_name, {})

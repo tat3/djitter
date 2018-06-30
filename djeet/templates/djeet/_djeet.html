@@ -13,6 +13,14 @@
     </div>
     <p class="card-text">{{ djeet.body }}</p>
     <p class="card-text"><small class="text-muted">{{ djeet.created_at }}</small></p>
-  </div>  
+    <div class="djeet__action">
+      {% if not request.user.djeeterprofile in djeet.liked_by.all %}
+        <a class="btn btn-success btn-like" href="{% url "profile:like" djeet_id=djeet.id %}">Like</a>
+      {% else %}
+        <a class="btn btn-danger btn-like" href="{% url "profile:stoplike" djeet_id=djeet.id %}">Stop Like</a>
+      {% endif %}
+
+    </div>
+  </div>
 </div>
 

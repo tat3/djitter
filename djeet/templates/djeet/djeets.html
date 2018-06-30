@@ -1,0 +1,14 @@
+{% extends 'djitter/base.html' %}
+
+{% block main %}
+<div class="row">
+  <div class="col-12">
+    <h3>{{ title }}</h3>
+
+    {% for djeet in djeets %}
+      {% include "djeet/_djeet.html" %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+

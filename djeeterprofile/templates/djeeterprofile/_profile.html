@@ -31,13 +31,19 @@
             </a>
           </li>
           <li class="profile__link">
+            <a class="profile__link-inner" href="{% url "profile:likes" user.username %}">
+              <p class="profile__link-title">Likes</p>
+              <p class="profile__link-number">{{ user.djeeterprofile.likes.count }}</p>
+            </a>
+          </li>
+          <li class="profile__link">
             <a class="profile__link-inner" href="{% url "profile:follows" user.username %}">
               <p class="profile__link-title">Follows</p>
               <p class="profile__link-number">{{ user.djeeterprofile.follows.count }}</p> 
             </a>
           </li>
           <li class="profile__link">
-            <a class="profile__link-inner" href="{% url "profile:follows" user.username %}">
+            <a class="profile__link-inner" href="{% url "profile:following" user.username %}">
               <p class="profile__link-title">Followers</p>
               <p class="profile__link-number">{{ user.djeeterprofile.followed_by.count }}</p> 
             </a>
