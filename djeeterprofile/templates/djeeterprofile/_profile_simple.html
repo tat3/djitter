@@ -1,0 +1,29 @@
+{% load static %}
+
+  <div class="profile">
+    <div class="card profile__inner" style="">
+      <figure class="profile__icon">
+        <img class="card-img-top profile__img" src="{% static "djeeterprofile/img/icon.png" %}">
+      </figure>
+      <div class="card-body">
+        <div class="profile__user">
+          <div class="profile__user-name">
+            <h5 class="card-title">{{ user.nickname }}</h3>
+            <p class="card-subtitle text-muted">@{{ user.username }}</p>
+            <p class="card-text">{{ user.profile }}</p>
+          </div>
+        </div>
+        <div class="profile__follow">
+          {% ifnotequal request.user user %}
+            {% if request.user.djeeterprofile in user.djeeterprofile.followed_by.all %}
+              <a href="{% url "profile:stopfollow" user.username %}" class="btn btn-danger">Unfollow</a>
+            {% else %}
+              <a href="{% url "profile:follow" user.username %}" class="btn btn-success">Follow</a>
+            {% endif %}
+          {% endifnotequal %}
+        </div>
+
+      </div>
+    </div>
+  </div>
+

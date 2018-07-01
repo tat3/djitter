@@ -3,9 +3,9 @@
 {% block main %}
 <div>
   <h1>{{ title }}</h1>
-  <ul>
+  <ul class="users">
     {% for djeeter in djeeterprofiles %}
-    <li><a href="{% url "profile:profile" djeeter.user.username %}">@{{ djeeter.user.username }}</a></li>
+      <li>{% include "djeeterprofile/_profile_simple.html" with user=djeeter.user %}</li>
     {% endfor %}
   </ul>
 {% endblock %}
